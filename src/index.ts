@@ -3,8 +3,11 @@ import fetchInterceptor from './fetch-interceptor'
 
 import './style.css'
 
-fetchInterceptor((modelList: any[]) => {
-  console.log(modelList)
+const getPercentage = (num: number) => Math.round(num * 10000) / 100 + '%'
+
+const $progress = document.getElementById('progress') as HTMLImageElement
+fetchInterceptor((percent: number) => {
+  $progress.innerHTML = getPercentage(percent)
 })
 
 const $img = document.getElementById('img') as HTMLImageElement
@@ -65,7 +68,7 @@ async function yolo ($img: HTMLImageElement) {
     $div.style.left = (box.left + $img.offsetLeft) + 'px'
     $div.style.width = box.width + 'px'
     $div.style.height = box.height + 'px'
-    $div.innerHTML = `<span class='className'>${box.classes} ${Math.round(box.scores * 10000) / 100}%</span>`
+    $div.innerHTML = `<span class='className'>${box.classes} ${getPercentage(box.scores)}</span>`
 
     $rectbox.appendChild($div)
   })
