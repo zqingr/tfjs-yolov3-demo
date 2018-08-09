@@ -1,7 +1,7 @@
 
-export default function fetchInterceptor (callBack: Function) {
+export default function fetchInterceptor (totalCount: number, callBack: Function) {
   const _fetch = window.fetch
-  const totalModel = 191 * 2
+  const totalModel = totalCount * 2
   const promiseAllIndex = 1
   let currentPromiseAllIndex = 0
   let currentDownload = 0
@@ -35,10 +35,9 @@ export default function fetchInterceptor (callBack: Function) {
         req.then(r => {
           modeGroup.isDone = true
           currentDownload++
-
           callBack(currentDownload / totalModel)
         }).catch(e => {
-          window.location.reload()
+          // window.location.reload()
         })
       })
     }

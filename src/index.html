@@ -9,13 +9,19 @@
 </head>
 <body class="">
   <h1 class="title">Tensorflow.js</a> <a href="https://pjreddie.com/darknet/yolo/"><font>YoloV3</font></a></h1>
+
+  <div class="button-group">
+    <span class="button" id="button1">YOLOv3 DEMO (248M)</span>
+    <span class="button" id="button2">YOLOv3-tiny DEMO (35M)</span>
+  </div>
+
   <div class="loading-box">
       <div id="loading">
         <div></div>
         <div></div>
       </div>
-      <p>Loading Model (248M) <font id="progress"></font></p>
-      <p class="tip">This may take a few minutes, depending on your network. You can check the progress in the console.</p>
+      <p>Loading Model<font id="progress"></font></p>
+      <p class="tip">This may take a few minutes, depending on your network.</p>
   </div>
   <div class="content">
     <label for="file" class="file-lable">

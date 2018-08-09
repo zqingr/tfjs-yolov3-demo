@@ -1,4 +1,4 @@
-import yolov3, { preload } from 'tfjs-yolov3'
+import { yolov3, yolov3Tiny } from 'tfjs-yolov3'
 import fetchInterceptor from './fetch-interceptor'
 
 import './style.css'
@@ -6,17 +6,43 @@ import './style.css'
 const getPercentage = (num: number) => Math.round(num * 10000) / 100 + '%'
 
 const $progress = document.getElementById('progress') as HTMLImageElement
-fetchInterceptor((percent: number) => {
-  $progress.innerHTML = getPercentage(percent)
-})
 
 const $img = document.getElementById('img') as HTMLImageElement
 const $body = document.body
 const $rectbox = document.getElementById('rect-box') as HTMLElement
 
-async function start () {
+async function start (type: 'yolov3' | 'yolov3-tiny') {
   // const boxes = await yolov3({ $img, modelUrl: '/model/yolov3/model.json' })
-  await preload()
+  const YOLO = {
+    'yolov3': { modelCount: 191, fn: yolov3 },
+    'yolov3-tiny': { modelCount: 30, fn: yolov3Tiny }
+  }
+
+  fetchInterceptor(YOLO[type].modelCount, (percent: number) => {
+    $progress.innerHTML = getPercentage(percent)
+  })
+
+  $body.className = 'loading'
+  const y = await YOLO[type].fn()
+
+  async function yolo ($img: HTMLImageElement) {
+    const boxes = await y($img)
+
+    $rectbox.innerHTML = ''
+
+    boxes.forEach(box => {
+      const $div = document.createElement('div')
+      $div.className = 'rect'
+      $div.style.top = box.top + 'px'
+      $div.style.left = (box.left + $img.offsetLeft) + 'px'
+      $div.style.width = box.width + 'px'
+      $div.style.height = box.height + 'px'
+      $div.innerHTML = `<span class='className'>${box.classes} ${getPercentage(box.scores)}</span>`
+
+      $rectbox.appendChild($div)
+    })
+  }
+
   $body.className = 'loaded'
 
   const $lis = Array.from(document.querySelectorAll('.examples li')) as HTMLElement[]
@@ -56,24 +82,14 @@ async function start () {
   })
 }
 
-async function yolo ($img: HTMLImageElement) {
-  const boxes = await yolov3({ $img })
+const $button1 = document.getElementById('button1') as HTMLElement
+const $button2 = document.getElementById('button2') as HTMLElement
+$button1.addEventListener('click', () => {
+  start('yolov3')
+})
 
-  $rectbox.innerHTML = ''
+$button2.addEventListener('click', () => {
+  start('yolov3-tiny')
+})
 
-  boxes.forEach(box => {
-    const $div = document.createElement('div')
-    $div.className = 'rect'
-    $div.style.top = box.top + 'px'
-    $div.style.left = (box.left + $img.offsetLeft) + 'px'
-    $div.style.width = box.width + 'px'
-    $div.style.height = box.height + 'px'
-    $div.innerHTML = `<span class='className'>${box.classes} ${getPercentage(box.scores)}</span>`
-
-    $rectbox.appendChild($div)
-  })
-
-  console.log(boxes)
-}
-
-start()
+// start()

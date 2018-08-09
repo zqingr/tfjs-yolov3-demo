@@ -37,6 +37,6 @@
     "@types/echarts": "^0.0.13",
     "css-loader": "^1.0.0",
     "style-loader": "^0.21.0",
-    "tfjs-yolov3": "^0.1.2"
+    "tfjs-yolov3": "^1.0.2"
   }
 }
