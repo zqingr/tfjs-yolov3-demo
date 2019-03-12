@@ -65,7 +65,7 @@ module.exports = function (env) {
       }]
     },
 		externals: {
-			// "@tensorflow/tfjs": "@tensorflow/tfjs"
+			"@tensorflow/tfjs": "@tensorflow/tfjs"
 		},
     devServer: {
       port: 8010,
