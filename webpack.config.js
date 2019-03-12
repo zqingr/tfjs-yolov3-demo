@@ -47,7 +47,7 @@ module.exports = function (env) {
       {
         test: /\.html$/,
         loader: 'raw-loader',
-        exclude: ['./src/index.html']
+        exclude: path.join(__dirname, './src/index.html')
       },
       {
         test: /\.(jpg|jpeg|gif|png)$/,
@@ -68,7 +68,7 @@ module.exports = function (env) {
 			// "@tensorflow/tfjs": "@tensorflow/tfjs"
 		},
     devServer: {
-      port: 8000,
+      port: 8010,
       host: 'localhost',
       historyApiFallback: true,
       watchOptions: {

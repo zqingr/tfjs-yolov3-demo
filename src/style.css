@@ -183,7 +183,7 @@ body {
 }
 
 .loaded .content {
-  display: block;
+  display: block!important;
 }
 
 .file-lable {
